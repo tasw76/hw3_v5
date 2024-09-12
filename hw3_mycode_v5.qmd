@@ -1,0 +1,149 @@
+---
+title: "hw3_v5"
+format: html
+editor: visual
+---
+
+
+# Homework 3
+
+## Task 1: Control Flow Practice
+
+### Step 1: Bring in the data set and create 'status' column
+
+```{r}
+# hw3,  to bring in the data set
+
+load("hw2_list.rda")
+head(bp_list)
+
+# add status col
+my_list <- bp_list
+my_list$treatment$status <- character(20)
+my_list$placebo$status <- character(10)
+
+```
+
+### Step 2: fill in the 'status' column for the non-placebo data frame within the list
+
+```{r}
+# Task 1 (control flow practice)
+# use loop to fill in 'status' vector
+for (i in 1:20) {
+  if (my_list$treatment$post_bp[i] <=120) {
+    my_list$treatment$status[i] <- "optimal"
+  } else if (my_list$treatment$post_bp[i] <=130) {
+    my_list$treatment$status[i] <- "borderline"
+  } else if (my_list$treatment$post_bp[i] >130) {
+    my_list$treatment$status[i] <- "high"
+  }
+}
+
+```
+
+### Step 3: fill in the 'status' column for the placebo data frame within the list
+
+```{r}
+# use loop to fill in 'status' vector
+
+for (i in 1:10) {
+  if (my_list$placebo$post_bp[i] <=120) {
+    my_list$placebo$status[i] <- "optimal"
+  } else if (my_list$placebo$post_bp[i] <=130) {
+    my_list$placebo$status[i] <- "borderline"
+  } else if (my_list$placebo$post_bp[i] >130) {
+    my_list$placebo$status[i] <- "high"
+  }
+}
+
+```
+
+## Task 2: Function writing
+
+### **Step**: write a function that does what described in the homework 3
+
+```{r}
+# define the function
+process_statistics <- function(df_list, stat = "mean") {
+  # ensure the input is a list with 2 data frames
+  if (!is.list(df_list) || length(df_list) != 2) {
+    stop("The input must be a list containing two data frames: treatment and placebo.")
+  }
+
+  # Extract the data frames from the list
+  treatment_df <- df_list[[1]]
+  placebo_df <- df_list[[2]]
+  
+    # Ensure that both elements are data frames
+  if (!is.data.frame(treatment_df) || !is.data.frame(placebo_df)) {
+    stop("Both elements in the list must be data frames.")
+  }
+  
+    # Use get() to dynamically retrieve the function from the string
+  my_fun <- get(stat)
+  
+    # Compute the desired statistic for the 'pre', 'post', and 'diff' columns of both data frames
+  treatment_pre_stat <- my_fun(treatment_df$pre_bp)
+  treatment_post_stat <- my_fun(treatment_df$post_bp)
+  treatment_diff_stat <- my_fun(treatment_df$diff_bp)
+  
+  placebo_pre_stat <- my_fun(placebo_df$pre_bp)
+  placebo_post_stat <- my_fun(placebo_df$post_bp)
+  placebo_diff_stat <- my_fun(placebo_df$diff_bp)
+  
+    # Create an atomic vector with the calculated statistics
+  stat_values <- c(
+    treatment_pre_stat, 
+    treatment_post_stat, 
+    treatment_diff_stat, 
+    placebo_pre_stat, 
+    placebo_post_stat, 
+    placebo_diff_stat
+  )
+  
+    # Dynamically create meaningful names for the values
+  stat_names <- c(
+    paste("treatment_pre", stat, sep = "_"),
+    paste("treatment_post", stat, sep = "_"),
+    paste("treatment_diff", stat, sep = "_"),
+    paste("placebo_pre", stat, sep = "_"),
+    paste("placebo_post", stat, sep = "_"),
+    paste("placebo_diff", stat, sep = "_")
+  )
+  
+      # Assign names to the vector
+  names(stat_values) <- stat_names
+  
+  # Return the atomic vector with names
+  return(stat_values)
+}
+  
+```
+
+```{r}
+# Applying the function without specifying a statistic (default to "mean")
+result_mean <- process_statistics(my_list)
+
+# Applying the function with specifying the statistic as "var" (variance)
+result_var <- process_statistics(my_list, "var")
+
+# Applying the function with specifying the statistic as "sd" (standard deviation)
+result_sd <- process_statistics(my_list, "sd")
+
+# Applying the function with specifying the statistic as "min" (minimum)
+result_min <- process_statistics(my_list, "min")
+
+# Applying the function with specifying the statistic as "max" (maximum)
+result_max <- process_statistics(my_list, "max")
+
+# Print the results to see the statistics
+print(result_mean)
+print(result_var)
+print(result_sd)
+print(result_min)
+print(result_max)
+```
+
+
+
+
