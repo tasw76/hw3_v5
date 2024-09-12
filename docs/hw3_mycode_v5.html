@@ -208,6 +208,47 @@ $placebo
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show the list</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>my_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$treatment
+              patient pre_bp post_bp diff_bp normal     status
+Subject_1   Subject_1    120     127      -7  FALSE borderline
+Subject_2   Subject_2    151     145       6  FALSE       high
+Subject_3   Subject_3    125     135     -10  FALSE       high
+Subject_4   Subject_4    126     122       4  FALSE borderline
+Subject_5   Subject_5    115     115       0   TRUE    optimal
+Subject_6   Subject_6    132     122      10  FALSE borderline
+Subject_7   Subject_7    132     123       9  FALSE borderline
+Subject_8   Subject_8    129     126       3  FALSE borderline
+Subject_9   Subject_9    134     126       8  FALSE borderline
+Subject_10 Subject_10    139     129      10  FALSE borderline
+Subject_11 Subject_11    127     132      -5  FALSE       high
+Subject_12 Subject_12    122     146     -24  FALSE       high
+Subject_13 Subject_13    127     120       7  FALSE    optimal
+Subject_14 Subject_14    135     114      21   TRUE    optimal
+Subject_15 Subject_15    133     121      12  FALSE borderline
+Subject_16 Subject_16    128     120       8  FALSE    optimal
+Subject_17 Subject_17    147     128      19  FALSE borderline
+Subject_18 Subject_18    138     120      18  FALSE    optimal
+Subject_19 Subject_19    140     133       7  FALSE       high
+Subject_20 Subject_20    132     115      17   TRUE    optimal
+
+$placebo
+      patient pre_bp post_bp diff_bp normal     status
+1   Subject_1    138     105      33   TRUE    optimal
+2   Subject_2    135     136      -1  FALSE       high
+3   Subject_3    147     123      24  FALSE borderline
+4   Subject_4    117     130     -13  FALSE borderline
+5   Subject_5    152     134      18  FALSE       high
+6   Subject_6    134     143      -9  FALSE       high
+7   Subject_7    114     135     -21  FALSE       high
+8   Subject_8    121     139     -18  FALSE       high
+9   Subject_9    131     120      11  FALSE    optimal
+10 Subject_10    130     124       6  FALSE borderline</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="task-2-function-writing" class="level2">
@@ -215,107 +256,107 @@ $placebo
 <section id="step-write-a-function-that-does-what-described-in-the-homework-3" class="level3">
 <h3 class="anchored" data-anchor-id="step-write-a-function-that-does-what-described-in-the-homework-3"><strong>Step</strong>: write a function that does what described in the homework 3</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define the function</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>process_statistics <span class="ot">&lt;-</span> <span class="cf">function</span>(df_list, <span class="at">stat =</span> <span class="st">"mean"</span>) {</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ensure the input is a list with 2 data frames</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.list</span>(df_list) <span class="sc">||</span> <span class="fu">length</span>(df_list) <span class="sc">!=</span> <span class="dv">2</span>) {</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"The input must be a list containing two data frames: treatment and placebo."</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract the data frames from the list</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  treatment_df <span class="ot">&lt;-</span> df_list[[<span class="dv">1</span>]]</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  placebo_df <span class="ot">&lt;-</span> df_list[[<span class="dv">2</span>]]</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ensure that both elements are data frames</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.data.frame</span>(treatment_df) <span class="sc">||</span> <span class="sc">!</span><span class="fu">is.data.frame</span>(placebo_df)) {</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Both elements in the list must be data frames."</span>)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use get() to dynamically retrieve the function from the string</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  my_fun <span class="ot">&lt;-</span> <span class="fu">get</span>(stat)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the desired statistic for the 'pre', 'post', and 'diff' columns of both data frames</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  treatment_pre_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(treatment_df<span class="sc">$</span>pre_bp)</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  treatment_post_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(treatment_df<span class="sc">$</span>post_bp)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  treatment_diff_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(treatment_df<span class="sc">$</span>diff_bp)</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  placebo_pre_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(placebo_df<span class="sc">$</span>pre_bp)</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  placebo_post_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(placebo_df<span class="sc">$</span>post_bp)</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  placebo_diff_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(placebo_df<span class="sc">$</span>diff_bp)</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create an atomic vector with the calculated statistics</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  stat_values <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    treatment_pre_stat, </span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    treatment_post_stat, </span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    treatment_diff_stat, </span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    placebo_pre_stat, </span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    placebo_post_stat, </span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    placebo_diff_stat</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Dynamically create meaningful names for the values</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  stat_names <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"treatment_pre"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"treatment_post"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"treatment_diff"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"placebo_pre"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"placebo_post"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"placebo_diff"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>)</span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Assign names to the vector</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(stat_values) <span class="ot">&lt;-</span> stat_names</span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return the atomic vector with names</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(stat_values)</span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define the function</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>process_statistics <span class="ot">&lt;-</span> <span class="cf">function</span>(df_list, <span class="at">stat =</span> <span class="st">"mean"</span>) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ensure the input is a list with 2 data frames</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.list</span>(df_list) <span class="sc">||</span> <span class="fu">length</span>(df_list) <span class="sc">!=</span> <span class="dv">2</span>) {</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"The input must be a list containing two data frames: treatment and placebo."</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract the data frames from the list</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  treatment_df <span class="ot">&lt;-</span> df_list[[<span class="dv">1</span>]]</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  placebo_df <span class="ot">&lt;-</span> df_list[[<span class="dv">2</span>]]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ensure that both elements are data frames</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.data.frame</span>(treatment_df) <span class="sc">||</span> <span class="sc">!</span><span class="fu">is.data.frame</span>(placebo_df)) {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Both elements in the list must be data frames."</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use get() to dynamically retrieve the function from the string</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  my_fun <span class="ot">&lt;-</span> <span class="fu">get</span>(stat)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the desired statistic for the 'pre', 'post', and 'diff' columns of both data frames</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  treatment_pre_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(treatment_df<span class="sc">$</span>pre_bp)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  treatment_post_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(treatment_df<span class="sc">$</span>post_bp)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  treatment_diff_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(treatment_df<span class="sc">$</span>diff_bp)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  placebo_pre_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(placebo_df<span class="sc">$</span>pre_bp)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  placebo_post_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(placebo_df<span class="sc">$</span>post_bp)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  placebo_diff_stat <span class="ot">&lt;-</span> <span class="fu">my_fun</span>(placebo_df<span class="sc">$</span>diff_bp)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create an atomic vector with the calculated statistics</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  stat_values <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    treatment_pre_stat, </span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    treatment_post_stat, </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    treatment_diff_stat, </span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    placebo_pre_stat, </span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    placebo_post_stat, </span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    placebo_diff_stat</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Dynamically create meaningful names for the values</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>  stat_names <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"treatment_pre"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"treatment_post"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"treatment_diff"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"placebo_pre"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"placebo_post"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"placebo_diff"</span>, stat, <span class="at">sep =</span> <span class="st">"_"</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Assign names to the vector</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(stat_values) <span class="ot">&lt;-</span> stat_names</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return the atomic vector with names</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(stat_values)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function without specifying a statistic (default to "mean")</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>result_mean <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function with specifying the statistic as "var" (variance)</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>result_var <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list, <span class="st">"var"</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function with specifying the statistic as "sd" (standard deviation)</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>result_sd <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list, <span class="st">"sd"</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function with specifying the statistic as "min" (minimum)</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>result_min <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list, <span class="st">"min"</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function with specifying the statistic as "max" (maximum)</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>result_max <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list, <span class="st">"max"</span>)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results to see the statistics</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function without specifying a statistic (default to "mean")</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>result_mean <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function with specifying the statistic as "var" (variance)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>result_var <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list, <span class="st">"var"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function with specifying the statistic as "sd" (standard deviation)</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>result_sd <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list, <span class="st">"sd"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function with specifying the statistic as "min" (minimum)</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>result_min <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list, <span class="st">"min"</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Applying the function with specifying the statistic as "max" (maximum)</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>result_max <span class="ot">&lt;-</span> <span class="fu">process_statistics</span>(my_list, <span class="st">"max"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results to see the statistics</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> treatment_pre_mean treatment_post_mean treatment_diff_mean    placebo_pre_mean 
              131.60              125.95                5.65              131.90 
   placebo_post_mean   placebo_diff_mean 
              128.90                3.00 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> treatment_pre_var treatment_post_var treatment_diff_var    placebo_pre_var 
           75.72632           78.99737          117.81842          149.87778 
   placebo_post_var   placebo_diff_var 
          124.98889          341.33333 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> treatment_pre_sd treatment_post_sd treatment_diff_sd    placebo_pre_sd 
          8.702087          8.888046         10.854419         12.242458 
   placebo_post_sd   placebo_diff_sd 
         11.179843         18.475209 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_min)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_min)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> treatment_pre_min treatment_post_min treatment_diff_min    placebo_pre_min 
                115                114                -24                114 
   placebo_post_min   placebo_diff_min 
                105                -21 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_max)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result_max)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> treatment_pre_max treatment_post_max treatment_diff_max    placebo_pre_max 
                151                146                 21                152 

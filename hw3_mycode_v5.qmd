@@ -58,6 +58,12 @@ for (i in 1:10) {
 
 ```
 
+```{r}
+# show the list
+my_list
+```
+
+
 ## Task 2: Function writing
 
 ### **Step**: write a function that does what described in the homework 3
